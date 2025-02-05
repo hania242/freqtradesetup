@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One-Click Freqtrade Setup</title>
+    <script>
+        function startBot() {
+            fetch('/start-bot')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Freqtrade One-Click Setup</h1>
+    <button onclick="startBot()">Start Trading Bot</button>
+</body>
+</html>
