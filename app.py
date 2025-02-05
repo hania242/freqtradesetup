@@ -1,12 +1,18 @@
-from flask import Flask, jsonify, redirect
+from flask import Flask, jsonify, redirect, render_template
 import os
 import subprocess
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", template_folder="templates")
 
 FREQTRADE_CONFIG_PATH = "/root/freqtrade/config.json"
 FREQTRADE_STRATEGY_PATH = "/root/freqtrade/user_data/strategies/"
 
+# ✅ Serve index.html when user visits "/"
+@app.route('/')
+def home():
+    return render_template("index.html")  # Serve your index.html
+
+# ✅ Start the Freqtrade bot when clicking "Start Bot"
 @app.route('/start-bot')
 def start_bot():
     try:
@@ -35,4 +41,5 @@ def start_bot():
         return jsonify(success=False, message=str(e))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    port = int(os.environ.get("PORT", 5000))  # Railway assigns a dynamic port
+    app.run(host='0.0.0.0', port=port)
